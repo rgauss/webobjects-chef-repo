@@ -8,6 +8,14 @@ After adding the `webobjects` cookbook to your chef repo you can add roles to in
 Apache http server and the WebObjects application server.
 
 
+Setup
+=====
+
+Typically you'd fork or clone this repository then create a `.chef` directory with your credentials and
+`knife.rb` file to connect to your chef server.
+
+
+
 Roles
 =====
 
