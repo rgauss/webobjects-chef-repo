@@ -1,0 +1,32 @@
+default[:webobjects][:wonder_source_remote_url]    = "http://webobjects.s3.amazonaws.com/Wonder-Source.tar.gz"
+default[:webobjects][:wonder_source_local_package]    = "Wonder-Source.tar.gz"
+default[:webobjects][:wonder_source_dir_Utilities] = "Utilities"
+default[:webobjects][:wonder_source_dir_Adaptors] = "Utilities/Adaptors"
+
+default[:webobjects][:webobjects_apache_conf_remote_url] = "http://webobjects.s3.amazonaws.com/apache.conf"
+default[:webobjects][:webobjects_apache_conf_local_name] = "webobjects.conf"
+
+default[:webobjects][:webobjects_user] = "appserver"
+default[:webobjects][:webobjects_group] = "appserveradm"
+default[:webobjects][:webobjects_resources_url] = "/WebObjects"
+default[:webobjects][:webobjects_apps_url] = "/apps/WebObjects"
+default[:webobjects][:webobjects_server_host] = "localhost"
+default[:webobjects][:webobjects_server_port] = "1085"
+default[:webobjects][:webobjects_server_interval] = "10"
+default[:webobjects][:webobjects_JavaMonitor_port] = "56789"
+
+default[:webobjects][:webobjects_WOLocalRootDirectory_dir] = "/opt"
+default[:webobjects][:webobjects_WOApplications_dir] = "/opt/WOApplications"
+default[:webobjects][:webobjects_WOWebServerResources_dir] = "/opt/WOWebServerResources"
+default[:webobjects][:webobjects_WODeployment_dir] = "/opt/WODeployment"
+
+default[:webobjects][:webobjects_JavaMonitor_remote_url] = "https://s3-eu-west-1.amazonaws.com/webobjects/JavaMonitor.tgz"
+default[:webobjects][:webobjects_JavaMonitor_local_package] = "JavaMonitor.tgz"
+default[:webobjects][:webobjects_JavaMonitor_app] = "JavaMonitor.woa"
+default[:webobjects][:webobjects_wotaskd_remote_url] = "https://s3-eu-west-1.amazonaws.com/webobjects/wotaskd.tgz"
+default[:webobjects][:webobjects_wotaskd_local_package] = "wotaskd.tgz"
+default[:webobjects][:webobjects_wotaskd_app] = "wotaskd.woa"
+
+default[:webobjects][:file_limit] = "200000"
+default[:webobjects][:security_limit_hard] = "200000"
+default[:webobjects][:security_limit_soft] = "200000"
