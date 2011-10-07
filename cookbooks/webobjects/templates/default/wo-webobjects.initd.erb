@@ -17,13 +17,13 @@ USER=<%= node[:webobjects][:webobjects_user] %>
 case "$1" in
 	start)
 		echo -n "Starting wotaskd and Monitor: "
-		su $USER -c "<%= node[:webobjects][:webobjects_WODeployment_dir] %>/wotaskd.woa/wotaskd -WOPort <%= node[:webobjects][:webobjects_server_port] %> &"
+		su $USER -c "<%= node[:webobjects][:webobjects_WODeployment_dir] %>/wotaskd.woa/wotaskd -WOPort <%= node[:webobjects][:webobjects_wotaskd_port] %> &"
 		su $USER -c "<%= node[:webobjects][:webobjects_WODeployment_dir] %>/JavaMonitor.woa/JavaMonitor -WOPort <%= node[:webobjects][:webobjects_JavaMonitor_port] %> &"
 		echo
 		;;
 	stop)
 		echo -n "Shutting down wotaskd and Monitor: "
-		WOTASKD_PID=`ps aux | awk '/WOPort <%= node[:webobjects][:webobjects_server_port] %>/ && !/awk/ {print $2}'`
+		WOTASKD_PID=`ps aux | awk '/WOPort <%= node[:webobjects][:webobjects_wotaskd_port] %>/ && !/awk/ {print $2}'`
 		kill $WOTASKD_PID
 		MONITOR_PID=`ps aux | awk '/WOPort <%= node[:webobjects][:webobjects_JavaMonitor_port] %>/ && !/awk/ {print $2}'`
 		kill $MONITOR_PID
