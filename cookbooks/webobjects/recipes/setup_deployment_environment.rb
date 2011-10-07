@@ -133,18 +133,25 @@ file "#{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/wotaskd" do
   mode "0750"
 end
 
+
+#TODO This doesn't seem to work
+#service "webobjects" do
+#  action [ :enable, :start ]
+#end
 template "/etc/init.d/webobjects" do
   source "wo-webobjects.initd.erb"
   mode "0755"
 end
-
-service "webobjects" do
-  action [ :enable, :start ]
+package "chkconfig" do
+end
+script "setup_webobjects_service" do
+  interpreter "bash"
+  code <<-EOH
+  chkconfig --add webobjects
+  chkconfig webobjects on
+  EOH
 end
 
-service "webobjects" do
-  action :restart
-end
 
 script "setup_java_monitor" do
   interpreter "bash"
