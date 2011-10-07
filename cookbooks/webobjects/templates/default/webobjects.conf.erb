@@ -27,7 +27,7 @@ WebObjectsAlias <%= node[:webobjects][:webobjects_apps_url] %>
 # For multiple hosts:
 # WebObjectsConfig http://<name-of-a-host>:<port-on-a-host>,http://<name-of-another-host>:<port-on-a-host> <interval>
 # For localhost:
-WebObjectsConfig http://<%= node[:webobjects][:webobjects_server_host] %>:<%= node[:webobjects][:webobjects_server_port] %> <%= node[:webobjects][:webobjects_server_interval] %>
+WebObjectsConfig http://<%= node[:webobjects][:webobjects_wotaskd_host] %>:<%= node[:webobjects][:webobjects_wotaskd_port] %> <%= node[:webobjects][:webobjects_wotaskd_interval] %>
 
 # Multicast Configuration
 # The apache module gets its configuration from all wotaskds

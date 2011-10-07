@@ -5,6 +5,7 @@ app = node.run_state[:current_app]
 script "deploy_locally" do
   interpreter "bash"
   user app['owner']
+  group app['group']
   cwd "#{app['deploy_to']}/repo"
   code <<-EOH
   tar -xzf #{app['deploy_to']}/repo/dist/#{app['deploy_name']}-Application.tar.gz -C #{node[:webobjects][:webobjects_WOApplications_dir]}
