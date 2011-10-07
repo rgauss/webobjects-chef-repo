@@ -142,13 +142,10 @@ template "/etc/init.d/webobjects" do
   source "wo-webobjects.initd.erb"
   mode "0755"
 end
-package "chkconfig" do
-end
 script "setup_webobjects_service" do
   interpreter "bash"
   code <<-EOH
-  chkconfig --add webobjects
-  chkconfig webobjects on
+  /etc/init.d/webobjects start
   EOH
 end
 
