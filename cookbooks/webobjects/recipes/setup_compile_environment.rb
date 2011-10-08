@@ -1,4 +1,21 @@
 
+if !File.exists?("/home/#{node[:webobjects][:webobjects_user]}/Library/wobuild.properties")
+
+  directory "/home/#{node[:webobjects][:webobjects_user]}/Library" do
+    owner node[:webobjects][:webobjects_user]
+    group node[:webobjects][:webobjects_group]
+    mode "0755"
+    recursive true
+  end
+
+  template "/home/#{node[:webobjects][:webobjects_user]}/Library/wobuild.properties" do
+    source "wobuild.properties.erb"
+    owner node[:webobjects][:webobjects_user]
+    group node[:webobjects][:webobjects_group]
+    mode "0744"
+  end
+
+end
 
 if !File.exists?("/home/#{node[:webobjects][:webobjects_user]}/Library/Application\ Support/WOLips/wolips.properties")
 
