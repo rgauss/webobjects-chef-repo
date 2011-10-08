@@ -43,11 +43,24 @@ on the use of Opscode's application deployment cookbooks and the use of data bag
 While this cookbook doesn't directly use any of the deployment recipes in that cookbook it follows
 the same precedence there.
 
-An additional data bag attribute used by this cookbook is `deploy_name` which when used like:
+Some additional data bag attributes used by this cookbook are `deploy_name` which when used like:
 
 	"deploy_name": "MyApp"
 
-Designates that you're deploying a WebObjects app of `MyApp.woa`
+Designates that you're deploying a WebObjects app of `MyApp.woa` and the `application_properties` attribute:
+
+  "application_properties": {
+  	"production": {
+  		"application_url": "https://www.example.com/cgi-bin/WebObjects/MyApp.woa",
+  		"smtp_host": "smtp.example.com",
+  	},
+  	"staging": {
+  		"application_url": "https://staging.example.com/cgi-bin/WebObjects/MyApp.woa",
+  		"smtp_host": "localhost",
+  	}
+  }
+
+where you might use these to manipulate a system properties file from a chef template before deploying.
 
 
 EC2 Deployment
@@ -57,6 +70,24 @@ If you're deploying on EC2 check out the [EC2 Knife plugin](http://help.opscode.
 (after setting your AWS key and secret) can make deploying a standalone WebObjects server as easy as:
 
 	knife ec2 server create --region us-east-1 -Z us-east-1a -I ami-cf33fea6 -f t1.micro -G <YOUR_GROUPS> -i ~/.ec2/<YOUR_EC2_KEY_PAIR>.pem -S <YOUR_EC2_KEY_PAIR> --ssh-user ubuntu -r role[webobjects_http_server],role[webobjects_application_server]
+
+
+Recipes
+=======
+
+* `build_apache_adaptor` - Downloads the wonder adaptor source, builds, and installs the `mod_WebObjects` module.
+* `compile` - Assumes you already have a `ant` build script and simply runs the default target.
+* `deploy_locally` - copies the built deployments to the local applications and resources directories, useful for standalone
+deployments.
+* `deploy_to_java_monitor` - Tells the `JavaMonitor` about the apps location and adds and instance of it.
+* `git_source` - Clones the application source from git, configured via data bags.
+* `modify_apache_config` - Creates an Apache config file from a template.
+* `modify_system_file_limits` - Changes the number of open files allowed.
+* `setup_compile_environment` - Creates a few directories and config files needed fro building WebObjects apps from source
+* `setup_deployment_environment` - Downloads and installs `wotaskd` and `JavaMonitor`, installs and starts a webobjects service,
+and sets JavaMonitor up with a host, site config, and password.
+
+
 
 Notes
 =====
