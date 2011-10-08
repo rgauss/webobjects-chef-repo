@@ -1,6 +1,5 @@
 
 
-
 user "#{node[:webobjects][:webobjects_user]}" do
   home "/home/#{node[:webobjects][:webobjects_user]}"
   shell "/bin/bash"
@@ -20,7 +19,6 @@ NEXT_ROOT=#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}; export NEX
 WOROOT=#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}; export WOROOT
   EOH
 end
-
 
 
 directory "#{node[:webobjects][:webobjects_WOApplications_dir]}" do
@@ -81,6 +79,17 @@ if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:web
     action :delete
   end
 
+  script "modify_webobjects_deployment_JavaMonitor" do
+    interpreter "bash"
+    user node[:webobjects][:webobjects_user]
+    code <<-EOH
+    cat >> /opt/WODeployment/JavaMonitor.woa/Contents/Resources/Properties << END
+
+  WODeploymentConfigurationDirectory=#{node[:webobjects][:webobjects_WODeployment_dir]}/Configuration
+  WOLocalRootDirectory=#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}
+    EOH
+  end
+
 end
 
 if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:webobjects][:webobjects_wotaskd_app]}")
@@ -104,28 +113,17 @@ if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:web
     action :delete
   end
 
-end
+  script "modify_webobjects_deployment_wotaskd" do
+    interpreter "bash"
+    user node[:webobjects][:webobjects_user]
+    code <<-EOH
+    cat >> #{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/Contents/Resources/Properties << END
 
-script "modify_webobjects_deployment_JavaMonitor" do
-  interpreter "bash"
-  user node[:webobjects][:webobjects_user]
-  code <<-EOH
-  cat >> /opt/WODeployment/JavaMonitor.woa/Contents/Resources/Properties << END
+  WODeploymentConfigurationDirectory=#{node[:webobjects][:webobjects_WODeployment_dir]}/Configuration
+  WOLocalRootDirectory=#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}
+    EOH
+  end
 
-WODeploymentConfigurationDirectory=#{node[:webobjects][:webobjects_WODeployment_dir]}/Configuration
-WOLocalRootDirectory=#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}
-  EOH
-end
-
-script "modify_webobjects_deployment_wotaskd" do
-  interpreter "bash"
-  user node[:webobjects][:webobjects_user]
-  code <<-EOH
-  cat >> #{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/Contents/Resources/Properties << END
-
-WODeploymentConfigurationDirectory=#{node[:webobjects][:webobjects_WODeployment_dir]}/Configuration
-WOLocalRootDirectory=#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}
-  EOH
 end
 
 
@@ -144,24 +142,27 @@ end
 #service "webobjects" do
 #  action [ :enable, :start ]
 #end
-template "/etc/init.d/webobjects" do
-  source "wo-webobjects.initd.erb"
-  mode "0755"
-end
-script "setup_webobjects_service" do
-  interpreter "bash"
-  code <<-EOH
-  /etc/init.d/webobjects start
-  sleep 20
-  EOH
-end
+if !File.exists?("/etc/init.d/webobjects}")
 
+  template "/etc/init.d/webobjects" do
+    source "wo-webobjects.initd.erb"
+    mode "0755"
+  end
+  script "setup_webobjects_service" do
+    interpreter "bash"
+    code <<-EOH
+    /etc/init.d/webobjects start
+    sleep 20
+    EOH
+  end
 
-script "setup_java_monitor" do
-  interpreter "bash"
-  code <<-EOH
-  curl -X POST -d "{id: '#{node[:webobjects][:webobjects_JavaMonitor_host]}',type: 'MHost', osType: 'UNIX',address: '#{node[:webobjects][:webobjects_JavaMonitor_host]}', name: '#{node[:webobjects][:webobjects_JavaMonitor_host]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mHosts.json
-  curl -X PUT -d "{woAdaptor:'#{node[:webobjects][:webobjects_site_url]}#{node[:webobjects][:webobjects_apps_url]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
-  curl -X PUT -d "{password:'#{node[:webobjects][:webobjects_JavaMonitor_password]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
-  EOH
+  script "setup_java_monitor" do
+    interpreter "bash"
+    code <<-EOH
+    curl -X POST -d "{id: '#{node[:webobjects][:webobjects_JavaMonitor_host]}',type: 'MHost', osType: 'UNIX',address: '#{node[:webobjects][:webobjects_JavaMonitor_host]}', name: '#{node[:webobjects][:webobjects_JavaMonitor_host]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mHosts.json
+    curl -X PUT -d "{woAdaptor:'#{node[:webobjects][:webobjects_site_url]}#{node[:webobjects][:webobjects_apps_url]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
+    curl -X PUT -d "{password:'#{node[:webobjects][:webobjects_JavaMonitor_password]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
+    EOH
+  end
+
 end
