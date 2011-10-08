@@ -17,7 +17,7 @@ Typically you'd fork or clone this repository:
 
 upload to your chef server, then create nodes with the appropriate roles for deployment.
 
-If unfamiliar with chef check out the [quick start page](http://wiki.opscode.com/display/chef/Quick+Start) and
+If unfamiliar with chef check out the [quick start page](http://wiki.opscode.com/display/chef/Quick+Start).
 
 You'll need to setup a `.chef` directory with your credentials and `knife.rb` file to connect to your chef server.
 
@@ -47,20 +47,20 @@ Some additional data bag attributes used by this cookbook are `deploy_name` whic
 
 	"deploy_name": "MyApp"
 
-Designates that you're deploying a WebObjects app of `MyApp.woa` and the `application_properties` attribute:
+designates that you're deploying a WebObjects app of `MyApp.woa` and the `application_properties` attribute:
 
-  "application_properties": {
-  	"production": {
-  		"application_url": "https://www.example.com/cgi-bin/WebObjects/MyApp.woa",
-  		"smtp_host": "smtp.example.com",
-  	},
-  	"staging": {
-  		"application_url": "https://staging.example.com/cgi-bin/WebObjects/MyApp.woa",
-  		"smtp_host": "localhost",
-  	}
-  }
+	  "application_properties": {
+	  	"production": {
+	  		"application_url": "https://www.example.com/cgi-bin/WebObjects/MyApp.woa",
+	  		"smtp_host": "smtp.example.com",
+	  	},
+	  	"staging": {
+	  		"application_url": "https://staging.example.com/cgi-bin/WebObjects/MyApp.woa",
+	  		"smtp_host": "localhost",
+	  	}
+	  }
 
-where you might use these to manipulate a system properties file from a chef template before deploying.
+is how you might manipulate a system properties file from a chef template before deploying.
 
 
 EC2 Deployment
@@ -94,6 +94,4 @@ Notes
 
 * At the time of this writing there seems to be an issue getting chef-client running on CentOS images unrelated to
 this cookbook.
-
-
-This cookbook adapted from the [ObjectStyle Wiki](http://wiki.objectstyle.org/confluence/display/WO/Platforms)
+* This cookbook was adapted from the work done at [ObjectStyle Wiki](http://wiki.objectstyle.org/confluence/display/WO/Platforms)
