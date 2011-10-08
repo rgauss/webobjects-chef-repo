@@ -21,6 +21,7 @@ default[:webobjects][:webobjects_WOLocalRootDirectory_dir] = "/opt"
 default[:webobjects][:webobjects_WOApplications_dir] = "/opt/WOApplications"
 default[:webobjects][:webobjects_WOWebServerResources_dir] = "/opt/WOWebServerResources"
 default[:webobjects][:webobjects_WODeployment_dir] = "/opt/WODeployment"
+default[:webobjects][:webobjects_WOLog_dir] = "/var/log/webobjects"
 
 default[:webobjects][:webobjects_JavaMonitor_remote_url] = "https://s3-eu-west-1.amazonaws.com/webobjects/JavaMonitor.tgz"
 default[:webobjects][:webobjects_JavaMonitor_local_package] = "JavaMonitor.tgz"
