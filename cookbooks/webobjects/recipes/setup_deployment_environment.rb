@@ -53,7 +53,7 @@ directory "#{node[:webobjects][:webobjects_WODeployment_dir]}/Configuration" do
   group node[:webobjects][:webobjects_group]
   action :create
 end
-directory "#{node[:webobjects][:webobjects_WODLog_dir]}" do
+directory "#{node[:webobjects][:webobjects_WOLog_dir]}" do
   recursive true
   owner node[:webobjects][:webobjects_user]
   group node[:webobjects][:webobjects_group]
