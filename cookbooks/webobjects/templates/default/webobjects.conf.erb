@@ -65,6 +65,7 @@ WebObjectsConfig http://<%= node[:webobjects][:webobjects_wotaskd_host] %>:<%= n
 Alias <%= node[:webobjects][:webobjects_resources_url] %> "<%= node[:webobjects][:webobjects_WOWebServerResources_dir] %>/WebObjects"
 
 <Directory "<%= node[:webobjects][:webobjects_WOWebServerResources_dir] %>/WebObjects">
+	Options FollowSymLinks
 	AllowOverride All
 	Order allow,deny
 	Allow from all
