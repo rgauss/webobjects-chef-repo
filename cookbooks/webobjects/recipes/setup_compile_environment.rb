@@ -31,6 +31,18 @@ end
 
 if !File.exists?("#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local/Library/Frameworks")
 
+  directory "#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local" do
+      owner node[:webobjects][:webobjects_user]
+      group node[:webobjects][:webobjects_group]
+      mode "0755"
+      recursive true
+  end
+  directory "#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local/Library" do
+    owner node[:webobjects][:webobjects_user]
+    group node[:webobjects][:webobjects_group]
+    mode "0755"
+    recursive true
+  end
   directory "#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local/Library/Frameworks" do
     owner node[:webobjects][:webobjects_user]
     group node[:webobjects][:webobjects_group]
@@ -42,6 +54,12 @@ end
 
 if !File.exists?("#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Library/Frameworks")
 
+  directory "#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Library" do
+    owner node[:webobjects][:webobjects_user]
+    group node[:webobjects][:webobjects_group]
+    mode "0755"
+    recursive true
+  end
   directory "#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Library/Frameworks" do
     owner node[:webobjects][:webobjects_user]
     group node[:webobjects][:webobjects_group]
