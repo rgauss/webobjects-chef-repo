@@ -29,9 +29,9 @@ if !File.exists?("#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Ext
 
 end
 
-if !File.exists?("#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local/Frameworks")
+if !File.exists?("#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local/Library/Frameworks")
 
-  directory "#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local/Frameworks" do
+  directory "#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}/Local/Library/Frameworks" do
     owner node[:webobjects][:webobjects_user]
     group node[:webobjects][:webobjects_group]
     mode "0755"
