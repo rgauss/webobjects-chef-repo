@@ -9,3 +9,7 @@ if !File.exists?("#{node[:apache][:dir]}/conf.d/#{node[:webobjects][:webobjects_
   end
 
 end
+
+service "apache2" do
+  action :restart
+end
