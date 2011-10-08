@@ -142,7 +142,7 @@ end
 #service "webobjects" do
 #  action [ :enable, :start ]
 #end
-if !File.exists?("/etc/init.d/webobjects}")
+if !File.exists?("/etc/init.d/webobjects")
 
   template "/etc/init.d/webobjects" do
     source "wo-webobjects.initd.erb"
