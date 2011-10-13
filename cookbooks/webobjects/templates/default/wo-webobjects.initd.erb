@@ -17,8 +17,8 @@ USER=<%= node[:webobjects][:webobjects_user] %>
 case "$1" in
 	start)
 		echo -n "Starting wotaskd and Monitor: "
-		su $USER -c "<%= node[:webobjects][:webobjects_WODeployment_dir] %>/wotaskd.woa/wotaskd -WOPort <%= node[:webobjects][:webobjects_wotaskd_port] %> &"
-		su $USER -c "<%= node[:webobjects][:webobjects_WODeployment_dir] %>/JavaMonitor.woa/JavaMonitor -WOPort <%= node[:webobjects][:webobjects_JavaMonitor_port] %> &"
+		su $USER -c "<%= node[:webobjects][:webobjects_WODeployment_dir] %>/wotaskd.woa/wotaskd -WOPort <%= node[:webobjects][:webobjects_wotaskd_port] %> >> <%= node[:webobjects][:webobjects_WOLog_dir] %>/wotaskd.log 2>&1 &"
+		su $USER -c "<%= node[:webobjects][:webobjects_WODeployment_dir] %>/JavaMonitor.woa/JavaMonitor -WOPort <%= node[:webobjects][:webobjects_JavaMonitor_port] %> >> <%= node[:webobjects][:webobjects_WOLog_dir] %>/JavaMonitor.log 2>&1 &"
 		echo
 		;;
 	stop)
