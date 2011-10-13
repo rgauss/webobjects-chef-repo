@@ -121,6 +121,8 @@ if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:web
 
   WODeploymentConfigurationDirectory=#{node[:webobjects][:webobjects_WODeployment_dir]}/Configuration
   WOLocalRootDirectory=#{node[:webobjects][:webobjects_WOLocalRootDirectory_dir]}
+  WOTaskd.receiveTimeout=#{node[:webobjects][:webobjects_wotaskd_receive_timeout]}
+  JavaMonitor.receiveTimeout=#{node[:webobjects][:webobjects_JavaMonitor_receive_timeout]}
     EOH
   end
   
