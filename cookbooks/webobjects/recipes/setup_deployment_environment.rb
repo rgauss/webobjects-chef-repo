@@ -128,8 +128,8 @@ if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:web
   
   template "#{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/Contents/Resources/SpawnOfWotaskd.sh" do
     source "SpawnOfWotaskd.sh.erb"
-    owner node[:apache][:user]
-    group node[:apache][:group]
+    owner node[:webobjects][:webobjects_user]
+    group node[:webobjects][:webobjects_group]
     mode "0750"
   end
 
