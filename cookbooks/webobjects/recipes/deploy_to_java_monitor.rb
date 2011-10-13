@@ -2,11 +2,11 @@
 app = node.run_state[:current_app]
 
 receive_timeout_string = ""
-if !app['webobjects_receive_timeout']?nil
+if !app['webobjects_receive_timeout'].nil?
   receive_timeout_string = ", recvTimeout: '#{app['webobjects_receive_timeout']}'"
 end
 connect_timeout_string = ""
-if !app['webobjects_connect_timeout']?nil
+if !app['webobjects_connect_timeout'].nil?
   connect_timeout_string = ", cnctTimeout: '#{app['webobjects_connect_timeout']}'"
 end
   
