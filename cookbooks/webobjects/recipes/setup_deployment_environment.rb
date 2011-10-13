@@ -124,12 +124,11 @@ if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:web
     EOH
   end
   
-  script "modify_webobjects_deployment_SpawnOfWotaskd" do
-    interpreter "bash"
-    user "root"
-    code <<-EOH
-    sed --in-place=.backup 's/1>\/dev\/null/1>>#{node[:webobjects][:webobjects_error_log]}/g' #{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/Contents/Resources/SpawnOfWotaskd.sh
-    EOH
+  template "#{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/Contents/Resources/SpawnOfWotaskd.sh" do
+    source "SpawnOfWotaskd.sh.erb"
+    owner node[:apache][:user]
+    group node[:apache][:group]
+    mode "0750"
   end
 
 end
