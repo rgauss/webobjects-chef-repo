@@ -60,7 +60,17 @@ designates that you're deploying a WebObjects app of `MyApp.woa` and the `applic
 	  	}
 	  }
 
-is how you might manipulate a system properties file from a chef template before deploying.
+is how you might manipulate a system properties file from a chef template before deploying
+
+	"webobjects_receive_timeout": "240",
+	"webobjects_connect_timeout": "240",
+	"webobjects_additional_arguments": "-Xmx512m -Xms128m"
+	
+are settings applied when adding the application to JavaMonitor, and 
+
+	"webobjects_num_instances": 2
+	
+is how you could specify that two instances should be created.
 
 
 EC2 Deployment
