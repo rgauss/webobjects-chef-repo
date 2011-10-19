@@ -147,43 +147,24 @@ file "#{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/wotaskd" do
 end
 
 
-#TODO This doesn't seem to work
-#service "webobjects" do
-#  action [ :enable, :start ]
-#end
 if !File.exists?("/etc/init.d/webobjects")
-
   template "/etc/init.d/webobjects" do
     source "wo-webobjects.initd.erb"
     mode "0755"
-    notifies :restart, "service[webobjects]"
+    notifies :run, "script[setup_java_monitor]", :immediate
   end
-  script "setup_webobjects_service" do
-      interpreter "bash"
-      user "root"
-      code <<-EOH
-      update-rc.d webobjects defaults
-      EOH
-    end
-  script "start_webobjects_service" do
-    interpreter "bash"
-    user "root"
-    code <<-EOH
-    service webobjects start
-    sleep #{node[:webobjects][:webobjects_wotaskd_startup_wait]}
-    EOH
-  end
-
-  script "setup_java_monitor" do
-    interpreter "bash"
-    code <<-EOH
-    curl -X POST -d "{id: '#{node[:webobjects][:webobjects_JavaMonitor_host]}',type: 'MHost', osType: 'UNIX',address: '#{node[:webobjects][:webobjects_JavaMonitor_host]}', name: '#{node[:webobjects][:webobjects_JavaMonitor_host]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mHosts.json
-    curl -X PUT -d "{woAdaptor:'#{node[:webobjects][:webobjects_site_url]}#{node[:webobjects][:webobjects_apps_url]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
-    curl -X PUT -d "{password:'#{node[:webobjects][:webobjects_JavaMonitor_password]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
-    EOH
-  end
-
 end
 
 service "webobjects" do
+  action [ :enable, :start ]
+end
+
+script "setup_java_monitor" do
+  interpreter "bash"
+  code <<-EOH
+  curl -X POST -d "{id: '#{node[:webobjects][:webobjects_JavaMonitor_host]}',type: 'MHost', osType: 'UNIX',address: '#{node[:webobjects][:webobjects_JavaMonitor_host]}', name: '#{node[:webobjects][:webobjects_JavaMonitor_host]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mHosts.json
+  curl -X PUT -d "{woAdaptor:'#{node[:webobjects][:webobjects_site_url]}#{node[:webobjects][:webobjects_apps_url]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
+  curl -X PUT -d "{password:'#{node[:webobjects][:webobjects_JavaMonitor_password]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
+  EOH
+  action :nothing
 end
