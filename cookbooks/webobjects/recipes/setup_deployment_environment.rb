@@ -169,7 +169,7 @@ if !File.exists?("/etc/init.d/webobjects")
     interpreter "bash"
     user "root"
     code <<-EOH
-    /etc/init.d/webobjects start
+    service webobjects start
     sleep 30
     EOH
   end
@@ -177,10 +177,9 @@ if !File.exists?("/etc/init.d/webobjects")
       interpreter "bash"
       user "root"
       code <<-EOH
-      /etc/init.d/webobjects stop
+      service webobjects stop
       sleep 2
-      /etc/init.d/webobjects start
-      sleep 30
+      service webobjects start
       EOH
       action :nothing
   end
