@@ -170,7 +170,7 @@ if !File.exists?("/etc/init.d/webobjects")
     user "root"
     code <<-EOH
     service webobjects start
-    sleep 30
+    sleep #{node[:webobjects][:webobjects_wotaskd_startup_wait]}
     EOH
   end
   script "final_restart_webobjects_service" do
@@ -178,9 +178,9 @@ if !File.exists?("/etc/init.d/webobjects")
       user "root"
       code <<-EOH
       service webobjects stop
-      sleep 2
+      sleep 5
       service webobjects start
-      sleep 30
+      sleep #{node[:webobjects][:webobjects_wotaskd_startup_wait]}
       EOH
       action :nothing
   end
