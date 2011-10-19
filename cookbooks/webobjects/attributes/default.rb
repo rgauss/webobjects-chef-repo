@@ -1,3 +1,5 @@
+default[:app_environment] = "_default"
+
 default[:webobjects][:wonder_source_remote_url]    = "http://webobjects.s3.amazonaws.com/Wonder-Source.tar.gz"
 default[:webobjects][:wonder_source_local_package]    = "Wonder-Source.tar.gz"
 default[:webobjects][:wonder_source_dir_Utilities] = "Utilities"

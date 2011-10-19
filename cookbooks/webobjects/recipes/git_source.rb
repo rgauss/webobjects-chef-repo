@@ -3,6 +3,7 @@ package "ant" do
 end
 
 app = node.run_state[:current_app]
+app_env = node[:app_environment]
 
 directory app['deploy_to'] do
   owner app['owner']
@@ -40,7 +41,7 @@ git "#{app['deploy_to']}/repo" do
   user app['owner']
   group app['group']
   repository "#{app['repository']}"
-  reference "master"
+  reference "#{app['revision'][app_env]}"
   ssh_wrapper "#{app['deploy_to']}/deploy-ssh-wrapper" if app['deploy_key']
   action :sync
 end
