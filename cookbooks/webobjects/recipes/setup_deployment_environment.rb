@@ -161,7 +161,7 @@ if !File.exists?("/etc/init.d/webobjects")
       interpreter "bash"
       user "root"
       code <<-EOH
-      update-rc.d -n webobjects defaults
+      update-rc.d webobjects defaults
       EOH
     end
   script "start_webobjects_service" do
