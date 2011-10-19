@@ -170,7 +170,7 @@ if !File.exists?("/etc/init.d/webobjects")
     user "root"
     code <<-EOH
     /etc/init.d/webobjects start
-    sleep 20
+    sleep 30
     EOH
   end
   script "final_restart_webobjects_service" do
