@@ -170,5 +170,6 @@ if javamonitor_needs_setup
     curl -X PUT -d "{woAdaptor:'#{node[:webobjects][:webobjects_site_url]}#{node[:webobjects][:webobjects_apps_url]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
     curl -X PUT -d "{password:'#{node[:webobjects][:webobjects_JavaMonitor_password]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
     EOH
+    notifies :restart, "service[webobjects]"
   end
 end
