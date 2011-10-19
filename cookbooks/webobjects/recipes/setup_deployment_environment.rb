@@ -158,8 +158,8 @@ if !File.exists?("/etc/init.d/webobjects")
 end
 
 service "webobjects" do
-  start_command "/sbin/service webobjects start && sleep 1"
-  stop_command "/sbin/service webobjects stop && sleep 1"
+  start_command "service webobjects start && sleep 1"
+  stop_command "service webobjects stop && sleep 1"
   action [ :enable, :start ]
 end
 
