@@ -166,6 +166,7 @@ if !File.exists?("/etc/init.d/webobjects")
     end
   script "start_webobjects_service" do
     interpreter "bash"
+    user "root"
     code <<-EOH
     /etc/init.d/webobjects start
     sleep 20
