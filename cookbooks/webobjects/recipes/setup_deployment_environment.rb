@@ -156,7 +156,7 @@ if !File.exists?("/etc/init.d/webobjects")
   template "/etc/init.d/webobjects" do
     source "wo-webobjects.initd.erb"
     mode "0755"
-    notifies :run, "script[final_restart_webobjects_service]"
+    notifies :restart, "service[webobjects]"
   end
   script "setup_webobjects_service" do
       interpreter "bash"
@@ -173,17 +173,6 @@ if !File.exists?("/etc/init.d/webobjects")
     sleep #{node[:webobjects][:webobjects_wotaskd_startup_wait]}
     EOH
   end
-  script "final_restart_webobjects_service" do
-      interpreter "bash"
-      user "root"
-      code <<-EOH
-      service webobjects stop
-      sleep 5
-      service webobjects start
-      sleep #{node[:webobjects][:webobjects_wotaskd_startup_wait]}
-      EOH
-      action :nothing
-  end
 
   script "setup_java_monitor" do
     interpreter "bash"
@@ -194,4 +183,7 @@ if !File.exists?("/etc/init.d/webobjects")
     EOH
   end
 
+end
+
+service "webobjects" do
 end
