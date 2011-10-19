@@ -158,6 +158,13 @@ if !File.exists?("/etc/init.d/webobjects")
     mode "0755"
   end
   script "setup_webobjects_service" do
+      interpreter "bash"
+      user "root"
+      code <<-EOH
+      update-rc.d -n webobjects defaults
+      EOH
+    end
+  script "start_webobjects_service" do
     interpreter "bash"
     code <<-EOH
     /etc/init.d/webobjects start
