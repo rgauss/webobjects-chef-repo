@@ -158,6 +158,14 @@ if !File.exists?("/etc/init.d/webobjects")
 end
 
 service "webobjects" do
+  case node[:platform]
+  when "ubuntu"
+    if node[:platform_version].to_f >= 9.10
+      provider Chef::Provider::Service::Upstart
+    end
+  end
+  start_command "/sbin/service webobjects start && sleep 1"
+  stop_command "/sbin/service webobjects stop && sleep 1"
   action [ :enable, :start ]
 end
 
