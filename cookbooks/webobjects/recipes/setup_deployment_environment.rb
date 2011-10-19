@@ -180,6 +180,7 @@ if !File.exists?("/etc/init.d/webobjects")
       /etc/init.d/webobjects stop
       sleep 2
       /etc/init.d/webobjects start
+      sleep 30
       EOH
       action :nothing
   end
