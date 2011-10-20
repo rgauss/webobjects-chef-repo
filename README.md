@@ -28,7 +28,7 @@ that override the defaults.
 Usage
 =====
 
-See the `webobjects` cookbook for details on usage.
+See the [webobjects cookbook](https://github.com/rgauss/webobjects-chef-repo/tree/master/cookbooks/webobjects) for details on usage.
 
 
 Roles
