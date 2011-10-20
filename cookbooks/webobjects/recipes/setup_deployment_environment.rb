@@ -163,7 +163,7 @@ file "#{node[:webobjects][:webobjects_WODeployment_dir]}/wotaskd.woa/wotaskd" do
   mode "0750"
 end
 
-
+# TODO The webobjects service seems to terminate at the end of a knife ec2 bootstrapping process
 javamonitor_needs_setup = false
 
 if !File.exists?("/etc/init.d/webobjects")

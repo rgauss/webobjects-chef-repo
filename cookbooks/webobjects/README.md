@@ -206,9 +206,11 @@ is how you could specify that two instances of your application should be create
 Notes
 =====
 
+* The webobjects service seems to terminate at the end of a knife ec2 bootstrapping process for some reason so you'll
+have to ssh to the instance and run `sudo service webobjects start` to get it running again.
 * At the time of this writing there seems to be an issue getting chef-client running on CentOS 5.x images unrelated to
 this cookbook.
-* This cookbook was adapted from the work done at [ObjectStyle Wiki](http://wiki.objectstyle.org/confluence/display/WO/Platforms)
+* This cookbook was adapted from the work done at [ObjectStyle Wiki](http://wiki.objectstyle.org/confluence/display/WO/Platforms).
 
 
 License and Authors
