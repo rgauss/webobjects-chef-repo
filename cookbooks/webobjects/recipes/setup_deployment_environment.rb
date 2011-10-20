@@ -153,12 +153,13 @@ if !File.exists?("/etc/init.d/webobjects")
   template "/etc/init.d/webobjects" do
     source "wo-webobjects.initd.erb"
     mode "0755"
+    notifies :start, "service[webobjects]", :immediately
   end
   javamonitor_needs_setup = true
 end
 
 service "webobjects" do
-  action [ :enable, :stop, :start ]
+  action :enable
 end
 
 if javamonitor_needs_setup
@@ -171,4 +172,5 @@ if javamonitor_needs_setup
     curl -X PUT -d "{password:'#{node[:webobjects][:webobjects_JavaMonitor_password]}'}" http://#{node[:webobjects][:webobjects_JavaMonitor_host]}:#{node[:webobjects][:webobjects_JavaMonitor_port]}/cgi-bin/WebObjects/JavaMonitor.woa/ra/mSiteConfig.json
     EOH
   end
+  javamonitor_needs_setup = false
 end
