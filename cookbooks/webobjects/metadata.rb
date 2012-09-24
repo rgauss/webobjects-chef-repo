@@ -3,11 +3,12 @@ maintainer_email "ray.gauss@rightspro.com"
 license          "Apache 2.0"
 description      "Installs and configures a WebObjects service (wotaskd and JavaMonitor) and Apache adaptor"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.0.1"
+version          "0.0.2"
 
 depends "apache2"
 depends "build-essential"
 depends "java"
+depends "apt"
 
 recipe "webobjects", "Does nothing"
 recipe "webobjects::build_apache_adaptor", "Installs the OpenJDK flavor of Java"
