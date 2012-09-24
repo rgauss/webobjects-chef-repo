@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: apache2
-# Recipe:: python 
+# Recipe:: logrotate
 #
-# Copyright 2008-2009, Opscode, Inc.
+# Copyright 2012, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,13 @@
 # limitations under the License.
 #
 
-case node['platform']
-  when "debian", "ubuntu"
-    package "libapache2-mod-python" do
-      action :install
-    end
-  when "redhat", "centos", "scientific", "fedora", "amazon"
-    package "mod_python" do
-      action :install
-      notifies :run, resources(:execute => "generate-module-list"), :immediately
-    end
+apache_service = service "apache2" do
+  action :nothing
 end
 
-apache_module "python"
+begin
+  include_recipe 'logrotate'
+rescue
+  Chef::Log.warn("The apache::logrotate recipe requires the logrotate cookbook. Install the cookbook with `knife cookbook site install logrotate`.")
+end
+logrotate_app apache_service.service_name
