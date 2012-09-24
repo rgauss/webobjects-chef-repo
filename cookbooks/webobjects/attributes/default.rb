@@ -60,3 +60,4 @@ default[:webobjects][:security_limit_hard] = "200000"
 default[:webobjects][:security_limit_soft] = "200000"
   
 default[:webobjects][:deploy_to_repo_path] = "repo"
+default[:webobjects][:deploy_to_repo_application_path] = "repo"

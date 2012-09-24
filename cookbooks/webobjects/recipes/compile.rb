@@ -22,7 +22,7 @@ script "compile_app_source" do
   interpreter "bash"
   user app['owner']
   group app['group']
-  cwd "#{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_path]}"
+  cwd "#{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_application_path]}"
   code <<-EOH
   ant
   EOH

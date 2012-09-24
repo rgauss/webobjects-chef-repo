@@ -23,9 +23,9 @@ script "deploy_locally" do
   interpreter "bash"
   user app['owner']
   group app['group']
-  cwd "#{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_path]}"
+  cwd "#{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_application_path]}"
   code <<-EOH
-  tar -xzf #{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_path]}/dist/#{app['deploy_name']}-Application.tar.gz -C #{node[:webobjects][:webobjects_WOApplications_dir]}
-  tar -xzf #{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_path]}/dist/#{app['deploy_name']}-WebServerResources.tar.gz -C #{node[:webobjects][:webobjects_WOWebServerResources_dir]}
+  tar -xzf #{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_application_path]}/dist/#{app['deploy_name']}-Application.tar.gz -C #{node[:webobjects][:webobjects_WOApplications_dir]}
+  tar -xzf #{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_application_path]}/dist/#{app['deploy_name']}-WebServerResources.tar.gz -C #{node[:webobjects][:webobjects_WOWebServerResources_dir]}
   EOH
 end
