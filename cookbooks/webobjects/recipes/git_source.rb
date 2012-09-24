@@ -54,7 +54,7 @@ if app.has_key?("deploy_key")
   end
 end
 
-git "#{app['deploy_to']}/repo" do
+git "#{app['deploy_to']}/#{node[:webobjects][:deploy_to_repo_path]}" do
   user app['owner']
   group app['group']
   repository "#{app['repository']}"
