@@ -17,48 +17,103 @@
 # limitations under the License.
 #
 
-action :add do
-  unless ::File.exists?("/etc/apt/sources.list.d/#{new_resource.repo_name}-source.list")
-    Chef::Log.info "Adding #{new_resource.repo_name} repository to /etc/apt/sources.list.d/#{new_resource.repo_name}-source.list"
-    # add key
-    if new_resource.keyserver && new_resource.key
-      execute "install-key #{new_resource.key}" do
-        command "apt-key adv --keyserver #{new_resource.keyserver} --recv #{new_resource.key}"
-        action :nothing
-      end.run_action(:run)
-    elsif new_resource.key && (new_resource.key =~ /http/)
-      key_name = new_resource.key.split(/\//).last
-      remote_file "#{Chef::Config[:file_cache_path]}/#{key_name}" do
-        source new_resource.key
-        mode "0644"
-        action :nothing
-      end.run_action(:create_if_missing)
-      execute "install-key #{key_name}" do
-        command "apt-key add #{Chef::Config[:file_cache_path]}/#{key_name}"
-        action :nothing
-      end.run_action(:run)
-    end
-    # build our listing
-    repository = "deb"
-    repository = "deb-src" if new_resource.deb_src
-    repository = "# Created by the Chef apt_repository LWRP\n" + repository
-    repository += " #{new_resource.uri}"
-    repository += " #{new_resource.distribution}"
-    new_resource.components.each {|component| repository += " #{component}"}
-    # write out the file, replace it if it already exists
-    file "/etc/apt/sources.list.d/#{new_resource.repo_name}-source.list" do
-      owner "root"
-      group "root"
-      mode 0644
-      content repository + "\n"
-      action :nothing
-    end.run_action(:create)
-    execute "update package index" do
-      command "apt-get update"
+# install apt key from keyserver
+def install_key_from_keyserver(key, keyserver)
+  unless system("apt-key list | grep #{key}")
+    execute "install-key #{key}" do
+      command "apt-key adv --keyserver #{keyserver} --recv #{key}"
       action :nothing
     end.run_action(:run)
     new_resource.updated_by_last_action(true)
   end
+end
+
+# run command and extract gpg ids
+def extract_gpg_ids_from_cmd(cmd)
+  so = Mixlib::ShellOut.new(cmd)
+  so.run_command
+  so.stdout.split(/\n/).collect do |t|
+    if z = t.match(/^pub\s+\d+\w\/([0-9A-F]{8})/)
+      z[1]
+    end
+  end.compact
+end
+
+# install apt key from URI
+def install_key_from_uri(uri)
+  key_name = uri.split(/\//).last
+  cached_keyfile = "#{Chef::Config[:file_cache_path]}/#{key_name}"
+  if (new_resource.key =~ /http/)
+    r = remote_file cached_keyfile do
+      source new_resource.key
+      mode "0644"
+      action :nothing
+    end
+  else
+    r = cookbook_file cached_keyfile do
+      source new_resource.key
+      cookbook new_resource.cookbook
+      mode "0644"
+      action :nothing
+    end
+  end
+
+  r.run_action(:create)
+
+  installed_ids = extract_gpg_ids_from_cmd("apt-key finger")
+  key_ids = extract_gpg_ids_from_cmd("gpg --with-fingerprint #{cached_keyfile}")
+  unless installed_ids & key_ids == key_ids
+    execute "install-key #{key_name}" do
+      command "apt-key add #{cached_keyfile}"
+      action :nothing
+    end.run_action(:run)
+    new_resource.updated_by_last_action(true)
+  end
+end
+
+# build repo file contents
+def build_repo(uri, distribution, components, add_deb_src)
+  components = components.join(' ') if components.respond_to?(:join)
+  repo_info = "#{uri} #{distribution} #{components}\n"
+  repo =  "deb     #{repo_info}"
+  repo << "deb-src #{repo_info}" if add_deb_src
+  repo
+end
+
+action :add do
+    new_resource.updated_by_last_action(false)
+
+    # add key
+    if new_resource.keyserver && new_resource.key
+      install_key_from_keyserver(new_resource.key, new_resource.keyserver)
+    elsif new_resource.key
+      install_key_from_uri(new_resource.key)
+    end
+
+    execute "apt-get update" do
+      ignore_failure true
+      action :nothing
+    end
+
+  file "/var/lib/apt/periodic/update-success-stamp" do
+    action :nothing
+  end
+
+    # build repo file
+    repository = build_repo(new_resource.uri,
+                            new_resource.distribution,
+                            new_resource.components,
+                            new_resource.deb_src)
+
+    file "/etc/apt/sources.list.d/#{new_resource.repo_name}-source.list" do
+      owner "root"
+      group "root"
+      mode 0644
+      content repository
+      action :create
+    notifies :delete, resources(:file => "/var/lib/apt/periodic/update-success-stamp"), :immediately
+    notifies :run, resources(:execute => "apt-get update"), :immediately
+    end
 end
 
 action :remove do
