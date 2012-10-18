@@ -11,8 +11,8 @@ depends "java"
 depends "apt"
 
 recipe "webobjects", "Does nothing"
-recipe "webobjects::build_apache_adaptor", "Installs the OpenJDK flavor of Java"
-recipe "java::sun", "Installs the Sun flavor of Java"
+recipe "webobjects::build_apache_adaptor", "Builds the WO apache adaptor"
+recipe "java::openjdk", "Installs the OpenJDK flavor of Java"
 
 recipe "webobjects::build_apache_adaptor", "Downloads the wonder adaptor source, builds, and installs the mod_WebObjects module"
 recipe "webobjects::compile", "Assumes you already have a `ant` build script and simply runs the default target"
