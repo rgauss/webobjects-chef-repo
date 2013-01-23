@@ -96,6 +96,13 @@ if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:web
     action :delete
   end
 
+  # Make JavaMonitor WebServerResources available in WOWebServerResources directory via symlinking
+  link "#{node[:webobjects][:webobjects_WOWebServerResources_dir]}/WebObjects/JavaMonitor.woa" do
+    owner node[:webobjects][:webobjects_user]
+    group node[:webobjects][:webobjects_group]
+    to "#{node[:webobjects][:webobjects_WODeployment_dir]}/JavaMonitor.woa"
+  end
+
   script "modify_webobjects_deployment_JavaMonitor" do
     interpreter "bash"
     user node[:webobjects][:webobjects_user]
@@ -117,7 +124,7 @@ if !File.exists?("#{node[:webobjects][:webobjects_WODeployment_dir]}/#{node[:web
     group node[:webobjects][:webobjects_group]
     mode "0744"
   end
-  script "webobjects_javamonitor_unpackage_source" do
+  script "webobjects_wotaskd_unpackage_source" do
     interpreter "bash"
     user node[:webobjects][:webobjects_user]
     group node[:webobjects][:webobjects_group]
